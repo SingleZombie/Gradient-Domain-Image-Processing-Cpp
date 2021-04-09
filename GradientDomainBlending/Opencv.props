@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <OPENCV>C:\OpenCVSrc\opencv</OPENCV>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(OPENCV)\build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCV)\build\x86\vc15\lib;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>$(OPENCV)\build\x86\vc15\bin;$(WindowsSDK_MetadataPath);</LibraryWPath>
+    <_PropertySheetDisplayName>Opencv</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>opencv_imgcodecs420.lib;opencv_highgui420.lib;opencv_core420.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="OPENCV">
+      <Value>$(OPENCV)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
