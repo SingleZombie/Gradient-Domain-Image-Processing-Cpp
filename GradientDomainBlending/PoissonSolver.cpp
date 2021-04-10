@@ -43,8 +43,7 @@ Eigen::SparseMatrix<float> PoissonSolver::getFactorMatrix(int rows, int cols)
 
 Eigen::VectorXf PoissonSolver::getEdgeTerm(const cv::Mat& image, const cv::Rect& rect)
 {
-	Eigen::VectorXf res(rect.area());
-
+	Eigen::VectorXf res = Eigen::VectorXf::Zero(rect.area());
 
 	auto getId = [&](int i, int j) -> int
 	{
@@ -109,7 +108,7 @@ cv::Mat PoissonSolver::solvePoissonEquation(int rows, int cols, const Eigen::Spa
 		for (int j = 0; j < cols; j++, id++)
 		{
 			res.at<float>(i, j) = tmpRes(id);
-			std::cout << i << " " << j << " " << tmpRes(id) << std::endl;
+			//std::cout << i << " " << j << " " << tmpRes(id) << std::endl;
 		}
 	}
 
