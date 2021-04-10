@@ -13,8 +13,8 @@ void floatToTripleChar(cv::Mat& mat)
 
 int main(int argc, char* argv[])
 {
-	std::string filename = "p1.jpg";
-	std::string filename2 = "p2.jpg";
+	std::string filename = "Resource\\p1.jpg";
+	std::string filename2 = "Resource\\p2.jpg";
 	cv::Rect copyRect(220, 120, 50, 50);
 
 	auto srcMat = cv::imread(filename);
