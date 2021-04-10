@@ -3,6 +3,11 @@
 #include <vector>
 #include <cassert>
 
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>  
+#include <iostream>
+
 Eigen::SparseMatrix<float> PoissonSolver::getFactorMatrix(int rows, int cols)
 {
 	auto getId = [&](int i, int j) -> int
@@ -104,6 +109,7 @@ cv::Mat PoissonSolver::solvePoissonEquation(int rows, int cols, const Eigen::Spa
 		for (int j = 0; j < cols; j++, id++)
 		{
 			res.at<float>(i, j) = tmpRes(id);
+			std::cout << i << " " << j << " " << tmpRes(id) << std::endl;
 		}
 	}
 

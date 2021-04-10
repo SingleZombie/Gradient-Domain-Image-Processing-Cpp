@@ -1,4 +1,5 @@
 #include "GraidentFilter.h"
+
 GradientFilter::GradientFilter()
 {
 

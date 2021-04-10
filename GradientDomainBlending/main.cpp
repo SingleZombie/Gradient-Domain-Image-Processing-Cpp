@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <iostream>
 
 void tripleCharToFloat(cv::Mat& mat)
 {
@@ -11,11 +11,17 @@ void floatToTripleChar(cv::Mat& mat)
 	mat.convertTo(mat, CV_8U, 255.0f);
 }
 
+
+using namespace std;
+using namespace Eigen;
+
+
 int main(int argc, char* argv[])
 {
 	std::string filename = "Resource\\p1.jpg";
 	std::string filename2 = "Resource\\p2.jpg";
 	cv::Rect copyRect(220, 120, 50, 50);
+
 
 	auto srcMat = cv::imread(filename);
 	auto dstMat = cv::imread(filename2);
@@ -34,6 +40,7 @@ int main(int argc, char* argv[])
 	std::vector<cv::Mat> outputChannels;
 
 	GradientFilter gradientFilter;
+	gradientFilter.calLaplacianImage(srcMat);
 	// Laplacian Filter
 	for (int i = 0; i < channels.size(); i++)
 	{
@@ -44,6 +51,7 @@ int main(int argc, char* argv[])
 		auto rhsTerm = PoissonSolver::getEdgeTerm(dstImg, srcRect);
 		auto res = PoissonSolver::solvePoissonEquation(srcRect.height, srcRect.width, lhs, gDstMat, rhsTerm);
 		outputChannels.push_back(res);
+		//outputChannels.push_back(img(srcRect));
 	}
 	cv::Mat resImg;
 	cv::merge(outputChannels, resImg);
