@@ -8,110 +8,83 @@
 #include <opencv2/highgui/highgui.hpp>  
 #include <iostream>
 
-Eigen::SparseMatrix<float> PoissonSolver::getFactorMatrix(int rows, int cols)
+void PoissonSolver::getFactorMatrixAndEdgeTerm(
+	// Input
+	const ImageRegion& region,
+	int dstLeft, int dstTop,
+	const cv::Mat& dstMat,
+	// Output
+	Eigen::SparseMatrix<float>& factor,
+	Eigen::VectorXf& edgeTerm)
 {
-	auto getId = [&](int i, int j) -> int
-	{
-		return i * cols + j;
-	};
+	factor = Eigen::SparseMatrix<float>(region.size(), region.size());
+	edgeTerm = Eigen::VectorXf::Zero(region.size());
 
-	Eigen::SparseMatrix<float> res(rows * cols, rows * cols);
 	std::vector< Eigen::Triplet<float> > tripletArray;
-	static int ox[4] = {0, 0, 1, -1 };
-	static int oy[4] = {-1, 1, 0, 0 };
-	int cid = 0;
-	for (int i = 0; i < rows; i++)
+	static int dx[4] = { 0, 0, 1, -1 };
+	static int dy[4] = { -1, 1, 0, 0 };
+	for (int i = 0; i < region.size(); i++)
 	{
-		for (int j = 0; j < cols; j++, cid++)
+		auto pos = region[i];
+		int x = pos.first, y = pos.second;
+		tripletArray.push_back({ i, i, 4 });
+		for (int k = 0; k < 4; k++)
 		{
-			tripletArray.push_back({ cid, cid, 4 });
-			for (int k = 0; k < 4; k++)
+			int vx = x + dx[k];
+			int vy = y + dy[k];
+			if (!region.inRegion(vx, vy))
 			{
-				int vi = i + ox[k];
-				int vj = j + oy[k];
-				if (vi < 0 || vj < 0 || vi >= rows || vj >= cols)
-				{
-					continue;
-				}
-				tripletArray.push_back({ cid, getId(vi, vj), -1 });
+				edgeTerm(i) += dstMat.at<float>(dstTop + vy, dstLeft + vx);
+				continue;
 			}
+			tripletArray.push_back({ i, region(vx, vy), -1 });
 		}
 	}
-	res.setFromTriplets(tripletArray.begin(), tripletArray.end());
-	return res;
+	factor.setFromTriplets(tripletArray.begin(), tripletArray.end());
 }
 
-Eigen::VectorXf PoissonSolver::getEdgeTerm(const cv::Mat& image, const cv::Rect& rect)
+Eigen::VectorXf PoissonSolver::solvePoissonEquation(
+	const ImageRegion& region,
+	const Eigen::SparseMatrix<float>& A,
+	const cv::Mat& g,
+	const Eigen::VectorXf& rhsTerm)
 {
-	Eigen::VectorXf res = Eigen::VectorXf::Zero(rect.area());
-
-	auto getId = [&](int i, int j) -> int
+	Eigen::VectorXf rhs(region.size());
+	for (int i = 0; i < region.size(); i++)
 	{
-		return i * rect.width + j;
-	};
-
-	// top
-	for (int x = 0; x < rect.width; x++)
-	{
-		cv::Point p = rect.tl() + cv::Point(x, 0);
-		res(getId(0, x)) = image.at<float>(p.y, p.x);
-	}
-
-	// bottom
-	for (int x = 0; x < rect.width; x++)
-	{
-		cv::Point p = rect.tl() + cv::Point(x, rect.height - 1);
-		res(getId(rect.height - 1, x)) = image.at<float>(p.y, p.x);
-	}
-
-	// left
-	for (int y = 0; y < rect.height; y++)
-	{
-		cv::Point p = rect.tl() + cv::Point(0, y);
-		res(getId(y, 0)) = image.at<float>(p.y, p.x);
-	}
-
-	// right
-	for (int y = 0; y < rect.height; y++)
-	{
-		cv::Point p = rect.tl() + cv::Point(rect.width - 1, y);
-		res(getId(y, rect.width - 1)) = image.at<float>(p.y, p.x);
-	}
-
-	return res;
-}
-
-cv::Mat PoissonSolver::solvePoissonEquation(int rows, int cols, const Eigen::SparseMatrix<float>& A, const cv::Mat& b, const Eigen::VectorXf& rhsTerm)
-{
-	assert(rows * cols == A.rows());
-	assert(A.rows() == b.size().area());
-	cv::Mat res(cv::Size(rows, cols), b.type());
-
-	Eigen::VectorXf rhs(rows * cols);
-	for (int i = 0, id = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++, id++)
-		{
-			rhs(id) = b.at<float>(i, j);
-		}
+		auto pr = region[i];
+		rhs(i) = g.at<float>(pr.second, pr.first);
 	}
 	rhs += rhsTerm;
-	//cv::cv2eigen(b, rhs);
 
-	Eigen::SparseLU<Eigen::SparseMatrix<float>> solver;
+	Eigen::SimplicialLDLT<Eigen::SparseMatrix<float>> solver;
 	solver.analyzePattern(A);
 	solver.factorize(A);
 	Eigen::VectorXf tmpRes = solver.solve(rhs);
+	return tmpRes;
+}
 
-	for (int i = 0, id = 0; i < rows; i++)
+
+Eigen::VectorXf PoissonSolver::solvePoissonEquationDiff(
+	const ImageRegion& region,
+	const Eigen::SparseMatrix<float>& A,
+	const cv::Mat& x0,
+	const cv::Mat& g,
+	const Eigen::VectorXf& rhsTerm)
+{
+	Eigen::VectorXf x0v(region.size());
+	Eigen::VectorXf rhs(region.size());
+	for (int i = 0; i < region.size(); i++)
 	{
-		for (int j = 0; j < cols; j++, id++)
-		{
-			res.at<float>(i, j) = tmpRes(id);
-			//std::cout << i << " " << j << " " << tmpRes(id) << std::endl;
-		}
+		auto pr = region[i];
+		x0v(i) = x0.at<float>(pr.second, pr.first);
+		rhs(i) = g.at<float>(pr.second, pr.first);
 	}
+	rhs += rhsTerm;
 
-	//cv::eigen2cv(tmpRes, res);
-	return res;
+	Eigen::SimplicialLDLT<Eigen::SparseMatrix<float>> solver;
+	solver.analyzePattern(A);
+	solver.factorize(A);
+	Eigen::VectorXf tmpRes = solver.solve(rhs - A * x0v);
+	return tmpRes;
 }

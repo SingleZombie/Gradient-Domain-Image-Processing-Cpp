@@ -5,13 +5,30 @@
 #include <Eigen/Sparse>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp> 
+#include "ImageUtil.h"
 
 class PoissonSolver
 {
 public:
-	static Eigen::SparseMatrix<float> getFactorMatrix(int rows, int cols);
-	static Eigen::VectorXf getEdgeTerm(const cv::Mat& image, const cv::Rect& rect);
-	static cv::Mat solvePoissonEquation(int rows, int cols, const Eigen::SparseMatrix<float>& A, const cv::Mat& b, const Eigen::VectorXf& rhsTerm);
+	static void getFactorMatrixAndEdgeTerm(
+		// Input
+		const ImageRegion& region,
+		int dstLeft, int dstTop,
+		const cv::Mat& dstMat,
+		// Output
+		Eigen::SparseMatrix<float>& factor, 
+		Eigen::VectorXf& edgeTerm);
+	static Eigen::VectorXf solvePoissonEquation(
+		const ImageRegion& region, 
+		const Eigen::SparseMatrix<float>& A, 
+		const cv::Mat& g, 
+		const Eigen::VectorXf& rhsTerm);
+	static Eigen::VectorXf solvePoissonEquationDiff(
+		const ImageRegion& region,
+		const Eigen::SparseMatrix<float>& A,
+		const cv::Mat& x0,
+		const cv::Mat& g,
+		const Eigen::VectorXf& rhsTerm);
 private:
 	PoissonSolver()
 	{

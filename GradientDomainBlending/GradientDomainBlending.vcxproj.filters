@@ -24,7 +24,22 @@
     <ClCompile Include="PoissonSolver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ImageProcessingFunction.cpp">
+    <ClCompile Include="InputModel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageUtil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputModel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="checkImg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +53,19 @@
     <ClInclude Include="PoissonSolver.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="ImageProcessingFunction.h">
+    <ClInclude Include="InputModel.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageUtil.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputModel.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,23 @@
+DirectBlend Rect
+Resource\dog1.jpg
+Resource\sea1.jpg
+5 5 190 100
+10 10
+
+DirectBlend Rect
+Resource\sheep.jpg
+Resource\grass2.jpg
+5 5 400 260
+373 164
+
+DirectBlend Rect
+Resource\rainbow.jpg
+Resource\island.jpg
+1 1 70 95
+0 0
+
+OpaqueBlend Rect
+Resource\rainbow.jpg
+Resource\island.jpg
+1 1 70 95
+0 0

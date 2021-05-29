@@ -1,0 +1,11 @@
+DirectBlend Rect
+Resource\fish.jpg
+Resource\sea.jpg
+81 41 215 164
+354 232
+
+DirectBlend File
+Resource\fish.jpg
+Resource\sea.jpg
+Resource\fishMask.jpg
+354 232
