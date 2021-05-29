@@ -10,5 +10,6 @@
 #include "GraidentFilter.h"
 #include "InputModel.h"
 #include "OutputModel.h"
+#include "ImageBlending.h"
 
 #endif // !MAIN_H

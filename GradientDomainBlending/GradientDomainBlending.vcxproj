@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{C8B20F00-9028-48D1-AA86-A704D6D3F45B}</ProjectGuid>
     <RootNamespace>GradientDomainBlending</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -68,11 +68,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="OpenCV64d.props" />
-    <Import Project="Cuda64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Cuda64.props" />
     <Import Project="OpenCV64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -83,7 +81,7 @@
     <IncludePath>C:\Users\周弈帆\Downloads\eigen-3.3.9\eigen-3.3.9;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\周弈帆\Downloads\eigen-3.3.9\eigen-3.3.9;;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Download\eigen-3.3.9\eigen-3.3.9;;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\周弈帆\Downloads\eigen-3.3.9\eigen-3.3.9;$(CUDA_PATH)\include;$(IncludePath)</IncludePath>
@@ -147,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="checkImg.cpp" />
     <ClCompile Include="GradientFilter.cpp" />
+    <ClCompile Include="ImageBlending.cpp" />
     <ClCompile Include="ImageUtil.cpp" />
     <ClCompile Include="InputModel.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraidentFilter.h" />
+    <ClInclude Include="ImageBlending.h" />
     <ClInclude Include="ImageUtil.h" />
     <ClInclude Include="InputModel.h" />
     <ClInclude Include="main.h" />

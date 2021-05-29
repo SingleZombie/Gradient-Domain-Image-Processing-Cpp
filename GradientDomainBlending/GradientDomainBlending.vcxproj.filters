@@ -13,60 +13,81 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\IOModule">
+      <UniqueIdentifier>{5d0c419d-11b4-4a63-820c-097086764b5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Others">
+      <UniqueIdentifier>{7c4f8e0f-f059-4792-94ee-41370acd3b18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ImageProcessingModule">
+      <UniqueIdentifier>{b294926c-2667-4f90-ba27-c09e07d840bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\MainModule">
+      <UniqueIdentifier>{722daed2-b48b-48c8-a14b-e8b0354538db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\QuadTreeModule">
+      <UniqueIdentifier>{d00e82c8-c026-4307-b7ff-46e68eb51350}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GradientFilter.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PoissonSolver.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="InputModel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageUtil.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\IOModule</Filter>
     </ClCompile>
     <ClCompile Include="OutputModel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Task.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="QuadTree.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\IOModule</Filter>
     </ClCompile>
     <ClCompile Include="checkImg.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="GradientFilter.cpp">
+      <Filter>源文件\ImageProcessingModule</Filter>
+    </ClCompile>
+    <ClCompile Include="PoissonSolver.cpp">
+      <Filter>源文件\ImageProcessingModule</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageUtil.cpp">
+      <Filter>源文件\MainModule</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件\MainModule</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>源文件\MainModule</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>源文件\QuadTreeModule</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBlending.cpp">
+      <Filter>源文件\ImageProcessingModule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GraidentFilter.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PoissonSolver.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="InputModel.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageUtil.h">
-      <Filter>源文件</Filter>
+      <Filter>源文件\IOModule</Filter>
     </ClInclude>
     <ClInclude Include="OutputModel.h">
-      <Filter>源文件</Filter>
+      <Filter>源文件\IOModule</Filter>
+    </ClInclude>
+    <ClInclude Include="GraidentFilter.h">
+      <Filter>源文件\ImageProcessingModule</Filter>
+    </ClInclude>
+    <ClInclude Include="PoissonSolver.h">
+      <Filter>源文件\ImageProcessingModule</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageUtil.h">
+      <Filter>源文件\MainModule</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>源文件\MainModule</Filter>
     </ClInclude>
     <ClInclude Include="Task.h">
-      <Filter>源文件</Filter>
+      <Filter>源文件\MainModule</Filter>
     </ClInclude>
     <ClInclude Include="QuadTree.h">
-      <Filter>源文件</Filter>
+      <Filter>源文件\QuadTreeModule</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageBlending.h">
+      <Filter>源文件\ImageProcessingModule</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
