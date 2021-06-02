@@ -11,6 +11,8 @@ cv::Mat imgFloatToUchar(const cv::Mat& mat);
 
 float cvAngle(cv::Vec2f v1, cv::Vec2f v2);
 
+void traverseNeighbor(int x, int y, std::function<void(int, int)> func);
+
 class ImageRegion
 {
 public:
@@ -23,6 +25,8 @@ public:
 	void imageCopy(const cv::Mat& srcMat, cv::Mat& dstMat, int x, int y) const;
 	void imageCopyC3(const cv::Mat& srcMat, cv::Mat& dstMat, int x, int y) const;
 	const std::vector<cv::Point>& getVertices() const { return _vertices; }
+
+	int width, height;
 private:
 	void calIndexArray(const cv::Mat& maskImg);
 	std::vector<std::pair<int, int>> _posIndexArray;

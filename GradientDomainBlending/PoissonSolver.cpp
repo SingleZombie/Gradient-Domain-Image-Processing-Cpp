@@ -44,47 +44,12 @@ void PoissonSolver::getFactorMatrixAndEdgeTerm(
 }
 
 Eigen::VectorXf PoissonSolver::solvePoissonEquation(
-	const ImageRegion& region,
-	const Eigen::SparseMatrix<float>& A,
-	const cv::Mat& g,
-	const Eigen::VectorXf& rhsTerm)
+	const Eigen::SparseMatrix<float>& lhs,
+	const Eigen::VectorXf& rhs)
 {
-	Eigen::VectorXf rhs(region.size());
-	for (int i = 0; i < region.size(); i++)
-	{
-		auto pr = region[i];
-		rhs(i) = g.at<float>(pr.second, pr.first);
-	}
-	rhs += rhsTerm;
-
 	Eigen::SimplicialLDLT<Eigen::SparseMatrix<float>> solver;
-	solver.analyzePattern(A);
-	solver.factorize(A);
+	solver.analyzePattern(lhs);
+	solver.factorize(lhs);
 	Eigen::VectorXf tmpRes = solver.solve(rhs);
-	return tmpRes;
-}
-
-
-Eigen::VectorXf PoissonSolver::solvePoissonEquationDiff(
-	const ImageRegion& region,
-	const Eigen::SparseMatrix<float>& A,
-	const cv::Mat& x0,
-	const cv::Mat& g,
-	const Eigen::VectorXf& rhsTerm)
-{
-	Eigen::VectorXf x0v(region.size());
-	Eigen::VectorXf rhs(region.size());
-	for (int i = 0; i < region.size(); i++)
-	{
-		auto pr = region[i];
-		x0v(i) = x0.at<float>(pr.second, pr.first);
-		rhs(i) = g.at<float>(pr.second, pr.first);
-	}
-	rhs += rhsTerm;
-
-	Eigen::SimplicialLDLT<Eigen::SparseMatrix<float>> solver;
-	solver.analyzePattern(A);
-	solver.factorize(A);
-	Eigen::VectorXf tmpRes = solver.solve(rhs - A * x0v);
 	return tmpRes;
 }

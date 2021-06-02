@@ -28,12 +28,23 @@ float cvAngle(cv::Vec2f v1, cv::Vec2f v2)
 	return std::acos(cosv);
 }
 
-ImageRegion::ImageRegion(const cv::Mat& maskImg)
+void traverseNeighbor(int x, int y, std::function<void(int, int)> func)
+{
+	static int dx[] = { 0, 0, -1, 1 };
+	static int dy[] = { -1, 1, 0, 0 };
+	for (int d = 0; d < 4; d++)
+	{
+		int vx = x + dx[d], vy = y + dy[d];
+		func(vx, vy);
+	}
+}
+
+ImageRegion::ImageRegion(const cv::Mat& maskImg) : width(maskImg.cols), height(maskImg.rows)
 {
 	calIndexArray(maskImg);
 }
 
-ImageRegion::ImageRegion(const cv::Rect& rect)
+ImageRegion::ImageRegion(const cv::Rect& rect) : width(rect.width), height(rect.height)
 {
 	for (int i = 0; i < rect.height; i++)
 	{

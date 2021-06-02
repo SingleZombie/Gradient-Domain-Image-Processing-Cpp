@@ -54,9 +54,18 @@ void BasicBlending::imageBlending(
 
 	PoissonSolver::getFactorMatrixAndEdgeTerm(region, dstLeft, dstTop, dstImg, factor, edgeTerm);
 
+	Eigen::VectorXf rhs(region.size());
+	for (int i = 0; i < region.size(); i++)
+	{
+		auto pr = region[i];
+		rhs(i) = gSrc.at<float>(pr.second, pr.first);
+	}
+	rhs += edgeTerm;
+
 	int beginTime = clock();
-	auto res = PoissonSolver::solvePoissonEquation(region, factor, gSrc, edgeTerm);
-	//auto res = PoissonSolver::solvePoissonEquationDiff(region, factor, srcImg, gSrc, edgeTerm);
+
+	auto res = PoissonSolver::solvePoissonEquation(factor, rhs);
+
 	int endTime = clock();
 	computingTime = endTime - beginTime;
 
@@ -67,4 +76,53 @@ void BasicBlending::imageBlending(
 		const auto& pos = region[i];
 		resultImg.at<float>(dstTop + pos.second, dstLeft + pos.first) = res[i];
 	}	
+}
+
+AdvancedBlending::AdvancedBlending()
+{
+
+}
+void AdvancedBlending::init(
+	// Input
+	const cv::Mat& srcImg,
+	const cv::Mat& dstImg,
+	const ImageRegion& region,
+	int dstLeft, int dstTop,
+	TaskType taskType
+)
+{
+	_root = std::make_shared<QuadTreeRoot>(region, dstLeft, dstTop, dstImg.cols, dstImg.rows);
+	_root->calKeyPoints();
+}
+void AdvancedBlending::imageBlending(
+	const cv::Mat& srcImg,
+	const cv::Mat& dstImg,
+	const ImageRegion& region,
+	int dstLeft, int dstTop,
+	TaskType taskType,
+	cv::Mat& resultImg,
+	int& computingTime
+)
+{
+	computingTime = 0;
+
+	Eigen::SparseMatrix<float> lhs;
+	Eigen::VectorXf rhs;
+
+	_root->setEquations(srcImg, dstImg, lhs, rhs);
+
+	int beginTime = clock();
+	auto res = PoissonSolver::solvePoissonEquation(lhs, rhs);
+	int endTime = clock();
+	computingTime = endTime - beginTime;
+	resultImg = _root->recoverImg(srcImg, dstImg, res);
+}
+
+void AdvancedBlending::addOutputInfo(
+	std::vector<cv::Mat>& outputMat
+)
+{
+	outputMat.push_back(_root->toImg());
+	outputMat.push_back(_root->getDiffMat());
+	outputMat.push_back(_root->getKeyMat());
 }

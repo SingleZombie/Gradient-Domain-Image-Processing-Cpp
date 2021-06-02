@@ -3,14 +3,14 @@
 
 #include <unordered_map>
 
-enum TaskType
+enum class TaskType
 {
 	DirectBlend,
 	OpaqueBlend,
 	Tiling
 };
 
-enum RegionType
+enum class RegionType
 {
 	Rect, 
 	File

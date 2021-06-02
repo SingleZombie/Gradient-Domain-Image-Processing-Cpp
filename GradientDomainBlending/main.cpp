@@ -14,10 +14,11 @@ void floatToTripleChar(cv::Mat& mat)
 
 const std::string defaultOutputMode = "s";
 const std::string defaultCfgFilename = ".\\TestData.txt";
+const std::string defaultMethod = "d";
 
 int main(int argc, char* argv[])
 {
-	std::string outputMode, cfgFilename;
+	std::string outputMode, cfgFilename, methodName;
 	if (argc < 2)
 	{
 		outputMode = defaultOutputMode;
@@ -33,6 +34,14 @@ int main(int argc, char* argv[])
 	else
 	{
 		cfgFilename = argv[2];
+	}
+	if (argc < 4)
+	{
+		methodName = defaultMethod;
+	}
+	else
+	{
+		methodName = argv[3];
 	}
 
 	InputModel inputModel(cfgFilename);
@@ -74,7 +83,17 @@ int main(int argc, char* argv[])
 		// *******************************************************************************
 		// Change blending method here!
 		// *******************************************************************************
-		std::shared_ptr<BlendingMethodBase> blendingMethod = std::make_shared<BasicBlending>();
+		std::shared_ptr<BlendingMethodBase> blendingMethod;
+		if (methodName == "d")
+		{
+			blendingMethod = std::make_shared<BasicBlending>();
+		}
+		else
+		{
+			blendingMethod = std::make_shared<AdvancedBlending>();
+		}
+
+		blendingMethod->init(srcMat, dstMat, region, dstLeft, dstTop, inputMsg.taskType);
 
 		for (int i = 0; i < srcChannels.size(); i++)
 		{
@@ -104,6 +123,8 @@ int main(int argc, char* argv[])
 
 		// Image Blending
 		outputMsg.outputMat.push_back(resImg);
+
+		blendingMethod->addOutputInfo(outputMsg.outputMat);
 
 		outputModel.pushOutputParameters(outputMsg);
 	}

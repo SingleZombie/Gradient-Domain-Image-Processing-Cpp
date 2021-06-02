@@ -11,5 +11,6 @@
 #include "InputModel.h"
 #include "OutputModel.h"
 #include "ImageBlending.h"
+#include "QuadTree.h"
 
 #endif // !MAIN_H

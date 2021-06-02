@@ -19,16 +19,9 @@ public:
 		Eigen::SparseMatrix<float>& factor, 
 		Eigen::VectorXf& edgeTerm);
 	static Eigen::VectorXf solvePoissonEquation(
-		const ImageRegion& region, 
-		const Eigen::SparseMatrix<float>& A, 
-		const cv::Mat& g, 
-		const Eigen::VectorXf& rhsTerm);
-	static Eigen::VectorXf solvePoissonEquationDiff(
-		const ImageRegion& region,
-		const Eigen::SparseMatrix<float>& A,
-		const cv::Mat& x0,
-		const cv::Mat& g,
-		const Eigen::VectorXf& rhsTerm);
+		const Eigen::SparseMatrix<float>& lhs, 
+		const Eigen::VectorXf& rhs);
+
 private:
 	PoissonSolver()
 	{
